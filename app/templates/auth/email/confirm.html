@@ -1,0 +1,6 @@
+<p>{{ user.username }}，您好。</p>
+<p>欢迎注册案例管理平台!</p>
+<p>请点击链接：<a href="{{ url_for('auth.confirm', token=token, _external=True) }}">确认</a>。</p>
+<p>或者你可将下面链接粘贴到浏览器中进行确认</p>
+<p>{{ url_for('auth.confirm', token=token, _external=True) }}</p>
+<p><small>注意：请勿回复本邮件。</small></p>

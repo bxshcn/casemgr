@@ -1,0 +1,10 @@
+{{ user.username }}，您好。
+
+欢迎注册案例管理平台!
+
+请点击下面的链接确认：
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+————————————
+注意：请勿回复本邮件。

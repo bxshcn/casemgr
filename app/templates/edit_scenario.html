@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}案例管理平台 - 变更场景{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>变更场景</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

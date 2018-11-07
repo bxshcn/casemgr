@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}案例管理平台 - 场景{% endblock %}
+
+{% block page_content %}
+{% include '_scenarios.html' %}
+{% if current_user.can(Permission.EDIT) %}
+    <a class="btn btn-default" href="{{ url_for('.edit_scenario', id=scenarios[0].id) }}">
+    编辑场景</a>
+{% endif %}
+{% if current_user.can(Permission.EDIT) %}
+<h4 id="cases">新增案例</h4>
+<div class="case-form">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endif %}
+<div class="info-tabs">
+    <ul class="nav nav-tabs">
+	    <li class="active" id="scenariolist"><a href="#">案例列表</a></li>
+    </ul>
+    {% include '_cases.html' %}
+</div>
+{% if pagination %}
+<div class="pagination">
+	{# view函数scenario需要id作为参数！ #}
+    {{ macros.pagination_widget(pagination, '.scenario', fragment='#cases', id=scenarios[0].id) }}
+</div>
+{% endif %}
+{% endblock %}

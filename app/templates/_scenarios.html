@@ -1,0 +1,20 @@
+<ul class="scenarios">
+    {% for scenario in scenarios %}
+    <li class="scenario">
+        <div class="scenario-thumbnail">
+            <a href="{{ url_for('.scenario', id=scenario.id) }}"> {{ scenario.id }}
+            </a>
+        </div>
+        <div class="scenario-content">
+            <div class="scenario-date">{{ moment(scenario.timestamp).fromNow() }}</div>
+            <div class="scenario-author"><a href="{{ url_for('.user', username=scenario.edit_user.username) }}">{{ scenario.edit_user.username }}</a></div>
+            <div class="scenario-body">
+                {{ scenario.content }}
+            </div>
+            <div class="scenario-footer">
+		{# TODO #}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

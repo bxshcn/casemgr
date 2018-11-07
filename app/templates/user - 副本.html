@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}案例管理平台 - {{user.username}}{% endblock %}
+
+{#  1、用户信息展示
+    2、编辑用户的链接 url_for('.edit_user')
+    3、tab
+    if show_cases is 0: 则显示场景
+    else：显示案例
+#}
+
+{% block page_content %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src="">
+    <div class="profile-header">
+        <h1>{{ user.username }}</h1>
+        <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+        <p>{{ moment(user.member_since).format('L') }}注册本站</p>
+        <p>最近登录时间：{{ moment(user.last_seen).fromNow() }}.</p>
+        <p>共编辑过{{ user.edit_scenarios.count() }}个场景，{{ user.edit_cases.count() }}个案例。</p>
+        <p>
+            {% if user == current_user %}
+            <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">编辑</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+<h3 id="contributions">{{ user.username }} 编辑的</h3>
+<div class="info-tabs">
+    <ul class="nav nav-tabs">
+        {% if current_user.can(Permission.EDIT) %}
+        <li {% if not show_cases %} class="active" {% endif %} id="scenariolist"><a href="{{ url_for('.show_scenarios', username=user.username) }}">场景列表</a></li>
+        <li {% if show_cases %} class="active" id="caselist" {% endif %}>
+            <a href="{{ url_for('.show_cases', username=user.username) }}">案例列表</a></li>
+        {% endif %}
+        {% if not current_user.can(Permission.EDIT) %}
+        <li {% if not show_cases %} class="active" {% endif %} id="scenariolist">
+            <a href="{{ url_for('.user', username=user.username, show_cases=0)+'#contributions' }}">
+            场景列表</a></li>
+        <li {% if show_cases %} class="active" id="caselist" {% endif %}>
+            <a href="{{ url_for('.user', username=user.username, show_cases=1)+'#contributions' }}">
+            案例列表</a></li>
+        {% endif %}
+    </ul>
+    {% if not show_cases %}
+    {% include '_scenarios.html' %}
+    {% endif %}
+    {% if show_cases %}
+    {% include '_cases.html' %}
+    {% endif %}
+</div>
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.user', username=user.username, fragment='#contributions') }} 
+</div>
+{% endif %}
+
+{% endblock %}

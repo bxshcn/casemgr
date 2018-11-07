@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}案例管理平台{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <# TODO: 做一个跑马灯效果，显示最近更新的场景案例，点击后进入对应场景 #>
+</div>
+<div>
+    {% if current_user.can(Permission.EDIT) %}
+    <a class="btn btn-default" href="{{ url_for('.add_scenario') }}">
+    新增场景</a>
+    {% endif %}
+</div>
+<div class="info-tabs">
+    <ul class="nav nav-tabs">
+	    <li class="active" id="scenariolist"><a href="#">场景列表</a></li>
+    </ul>
+    {% include '_scenarios.html' %}
+</div>
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
